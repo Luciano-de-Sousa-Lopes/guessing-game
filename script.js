@@ -25,7 +25,7 @@ document.querySelector('.check').addEventListener('click', function () {
     document.querySelector('.error-message').textContent = '';
     guessResultElement.innerHTML =
       '<span class="right-guess">🎉 Correct Number!</span>';
-    document.querySelector('body').style.backgroundColor = 'cornflowerblue';
+    document.querySelector('body').style.backgroundColor = 'green';
     document.querySelector('.number').className = 'number winner';
   } else if (guess > secretNumber) {
     score--;
