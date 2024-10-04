@@ -130,6 +130,22 @@ h1 {
   margin-bottom: 2.5rem;
 }
 
+.right-guess {
+  background-color: hotpink;
+  color: black;
+  font-size: 2rem;
+  box-shadow: 0px 0px 10px 10px rgba(0, 0, 255, 0.9),
+    0px 0px 20px 20px rgba(0, 255, 0.9), 0px 0px 30px 30px rgba(255, 0, 0, 0.9),
+    0px 0px 40px 40px rgba(255, 255, 0, 0.9);
+  padding: 20px;
+  border-radius: 20px;
+}
+
+.wrong-guess {
+  font-size: 2rem;
+  color: red;
+}
+
 .label-score {
   margin-bottom: 2rem;
 }
