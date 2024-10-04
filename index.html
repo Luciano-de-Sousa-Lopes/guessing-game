@@ -16,7 +16,9 @@
     </header>
     <main>
       <section class="left">
-        <input type="number" class="guess" />
+        <label for="guess" class="guess-label">Your guess</label>
+        <input type="number" class="guess" id="guess" />
+        <p class="error-message"></p>
         <button class="btn check">Check!</button>
       </section>
       <section class="right">
