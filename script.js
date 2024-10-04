@@ -1,23 +1,32 @@
 'use strict';
 
-const secretNumber = Math.trunc(Math.random() * 20) + 1;
-document.querySelector('.number').textContent = secretNumber;
+let secretNumber = Math.trunc(Math.random() * 20) + 1;
 
 const guessResultElement = document.querySelector('.message');
 const scoreElement = document.querySelector('.score');
 let score = 20;
 scoreElement.textContent = score;
+let highScore = 0;
+document.querySelector('.highscore').textContent = highScore;
 
 document.querySelector('.check').addEventListener('click', function () {
   const guess = Number(document.querySelector('.guess').value);
-  console.log(`${typeof guess}`);
 
   if (!guess) {
     document.querySelector('.error-message').textContent = 'Enter a number';
   } else if (guess === secretNumber) {
+    if (score > highScore) {
+      highScore = score;
+      document.querySelector('.highscore').textContent = highScore;
+    }
+
+    document.querySelector('.number').textContent = secretNumber;
+
     document.querySelector('.error-message').textContent = '';
     guessResultElement.innerHTML =
       '<span class="right-guess">🎉 Correct Number!</span>';
+    document.querySelector('body').style.backgroundColor = 'green';
+    document.querySelector('.number').className = 'number winner';
   } else if (guess > secretNumber) {
     score--;
     if (score > 0) {
@@ -38,4 +47,16 @@ document.querySelector('.check').addEventListener('click', function () {
     }
   }
   scoreElement.textContent = score;
+});
+
+document.querySelector('.again').addEventListener('click', function () {
+  score = 20;
+  secretNumber = Math.trunc(Math.random() * 20) + 1;
+  document.querySelector('.message').textContent = 'Start guessing...';
+  document.querySelector('.score').textContent = score;
+  document.querySelector('.number').textContent = '?';
+  document.querySelector('.guess').value = '';
+  document.querySelector('body').style.backgroundColor = 'black';
+  document.querySelector('.highscore').textContent = highScore;
+  document.querySelector('.number').className = 'number';
 });

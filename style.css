@@ -146,6 +146,13 @@ h1 {
   color: red;
 }
 
+.winner {
+  font-size: 10rem;
+  width: 30rem;
+  background-color: hotpink;
+  color: green;
+}
+
 .label-score {
   margin-bottom: 2rem;
 }
