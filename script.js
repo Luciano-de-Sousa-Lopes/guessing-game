@@ -1,62 +1,129 @@
 'use strict';
 
-let secretNumber = Math.trunc(Math.random() * 20) + 1;
-
-const guessResultElement = document.querySelector('.message');
-const scoreElement = document.querySelector('.score');
 let score = 20;
-scoreElement.textContent = score;
 let highScore = 0;
-document.querySelector('.highscore').textContent = highScore;
+let secretNumber = generateSecretNumber();
+const numberEl = getElement('.number');
+const guessResultEl = getElement('.message');
+const scoreEl = getElement('.score');
+const highScoreEl = getElement('.highscore');
+const bodyEl = getElement('body');
+const checkButtomEl = getElement('.check');
+const guessEl = getElement('.guess');
+const errorMessageEl = getElement('.error-message');
+const againButtomEl = getElement('.again');
 
-document.querySelector('.check').addEventListener('click', function () {
-  const guess = Number(document.querySelector('.guess').value);
+function generateSecretNumber() {
+  return Math.trunc(Math.random() * 20) + 1;
+}
+
+function getElement(selector) {
+  return document.querySelector(selector);
+}
+
+function setElementValue(el, property, valueToSet) {
+  if (property === 'textContent') {
+    el.textContent = valueToSet;
+  } else if (property === 'innerHTML') {
+    el.innerHTML = valueToSet;
+  } else {
+    el.value = valueToSet;
+  }
+}
+
+function setElementStyle(el, styleProperty, styleValue) {
+  if (styleProperty === 'backgroundColor') {
+    el.style.backgroundColor = styleValue;
+  }
+}
+
+function setClassName(el, classValue) {
+  el.className = classValue;
+}
+
+function getElementValue(el, property) {
+  if (property === 'value') {
+    return Number(el.value);
+  }
+}
+
+function init() {
+  setElementValue(highScoreEl, 'textContent', highScore);
+  setElementValue(scoreEl, 'textContent', score);
+  setElementValue(scoreEl, 'textContent', score);
+}
+
+init();
+
+checkButtomEl.addEventListener('click', function () {
+  const guess = getElementValue(guessEl, 'value');
+  setElementValue(errorMessageEl, 'textContent', '');
 
   if (!guess) {
-    document.querySelector('.error-message').textContent = 'Enter a number';
+    setElementValue(errorMessageEl, 'textContent', 'Enter a number');
   } else if (guess === secretNumber) {
     if (score > highScore) {
       highScore = score;
-      document.querySelector('.highscore').textContent = highScore;
+      setElementValue(highScoreEl, 'textContent', highScore);
     }
 
-    document.querySelector('.number').textContent = secretNumber;
+    setElementValue(numberEl, 'textContent', secretNumber);
 
-    document.querySelector('.error-message').textContent = '';
-    guessResultElement.innerHTML =
-      '<span class="right-guess">🎉 Correct Number!</span>';
-    document.querySelector('body').style.backgroundColor = 'cornflowerblue';
-    document.querySelector('.number').className = 'number winner';
+    setElementValue(
+      guessResultEl,
+      'innerHTML',
+      '<span class="right-guess">🎉 Correct Number!</span>'
+    );
+
+    setElementStyle(bodyEl, 'backgroundColor', 'cornflowerblue');
   } else if (guess > secretNumber) {
     score--;
+
     if (score > 0) {
-      guessResultElement.innerHTML =
-        '<span class="wrong-guess">😞 Number too high!</span>';
+      setElementValue(
+        guessResultEl,
+        'innerHTML',
+        '<span class="wrong-guess">😞 Number too high!</span>'
+      );
     } else {
-      guessResultElement.innerHTML =
-        '<span class="wrong-guess">😞 You lost the game!</span>';
+      setElementValue(
+        guessResultEl,
+        'innerHTML',
+        '<span class="wrong-guess">😞 You lost the game!</span>'
+      );
     }
   } else if (guess < secretNumber) {
     score--;
     if (score > 0) {
-      guessResultElement.innerHTML =
-        '<span class="wrong-guess">😞 Number too low!</span>';
+      setElementValue(
+        guessResultEl,
+        'innerHTML',
+        '<span class="wrong-guess">😞 Number too low!</span>'
+      );
     } else {
-      guessResultElement.innerHTML =
-        '<span class="wrong-guess">😞 You lost the game!</span>';
+      setElementValue(
+        guessResultEl,
+        'innerHTML',
+        '<span class="wrong-guess">😞 You lost the game!</span>'
+      );
     }
   }
-  scoreElement.textContent = score;
+
+  setElementValue(scoreEl, 'textContent', score);
 });
 
-document.querySelector('.again').addEventListener('click', function () {
+// Reset the game
+againButtomEl.addEventListener('click', function () {
   score = 20;
-  secretNumber = Math.trunc(Math.random() * 20) + 1;
-  document.querySelector('.message').textContent = 'Start guessing...';
-  document.querySelector('.score').textContent = score;
-  document.querySelector('.number').textContent = '?';
-  document.querySelector('.guess').value = '';
-  document.querySelector('body').style.backgroundColor = 'black';
-  document.querySelector('.highscore').textContent = highScore;
-  document.querySelector('.number').className = 'number';
+  secretNumber = generateSecretNumber();
+  setElementValue(scoreEl, 'textContent', score);
+  setElementValue(guessResultEl, 'textContent', 'Start guessing...');
+
+  setElementValue(numberEl, 'textContent', '?');
+  setElementValue(guessEl, 'textContent', '');
+  setElementStyle(bodyEl, 'backgroundColor', 'black');
+  setElementValue(highScoreEl, 'textContent', highScore);
+  setElementValue(guessEl, 'value', '');
+
+  setClassName(numberEl, 'number');
 });
