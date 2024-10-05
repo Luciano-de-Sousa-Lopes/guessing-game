@@ -1,5 +1,18 @@
 'use strict';
 
+let score = 20;
+let highScore = 0;
+let secretNumber = generateSecretNumber();
+const numberEl = getElement('.number');
+const guessResultEl = getElement('.message');
+const scoreEl = getElement('.score');
+const highScoreEl = getElement('.highscore');
+const bodyEl = getElement('body');
+const checkButtomEl = getElement('.check');
+const guessEl = getElement('.guess');
+const errorMessageEl = getElement('.error-message');
+const againButtomEl = getElement('.again');
+
 function generateSecretNumber() {
   return Math.trunc(Math.random() * 20) + 1;
 }
@@ -18,35 +31,43 @@ function setElementValue(el, property, valueToSet) {
   }
 }
 
-let secretNumber = generateSecretNumber();
-const numberEl = getElement('.number');
-setElementValue(numberEl, 'textContent', secretNumber);
+function setElementStyle(el, styleProperty, styleValue) {
+  if (styleProperty === 'backgroundColor') {
+    el.style.backgroundColor = styleValue;
+  }
+}
 
-const guessResultEl = getElement('.message');
+function setClassName(el, classValue) {
+  el.className = classValue;
+}
 
-const scoreEl = getElement('.score');
-let score = 20;
-setElementValue(scoreEl, 'textContent', score);
-scoreEl.textContent = score;
-let highScore = 0;
+function getElementValue(el, property) {
+  if (property === 'value') {
+    return Number(el.value);
+  }
+}
 
-const highScoreEl = getElement('.highscore');
-setElementValue(highScoreEl, '.textContent', highScore);
+function init() {
+  setElementValue(highScoreEl, 'textContent', highScore);
+  setElementValue(scoreEl, 'textContent', score);
+  setElementValue(scoreEl, 'textContent', score);
+}
 
-document.querySelector('.check').addEventListener('click', function () {
-  const guess = Number(document.querySelector('.guess').value);
+init();
+
+checkButtomEl.addEventListener('click', function () {
+  const guess = getElementValue(guessEl, 'value');
+  setElementValue(errorMessageEl, 'textContent', '');
 
   if (!guess) {
-    document.querySelector('.error-message').textContent = 'Enter a number';
+    setElementValue(errorMessageEl, 'textContent', 'Enter a number');
   } else if (guess === secretNumber) {
     if (score > highScore) {
       highScore = score;
-      document.querySelector('.highscore').textContent = highScore;
+      setElementValue(highScoreEl, 'textContent', highScore);
     }
 
-    document.querySelector('.number').textContent = secretNumber;
-
-    document.querySelector('.error-message').textContent = '';
+    setElementValue(numberEl, 'textContent', secretNumber);
 
     setElementValue(
       guessResultEl,
@@ -54,8 +75,7 @@ document.querySelector('.check').addEventListener('click', function () {
       '<span class="right-guess">🎉 Correct Number!</span>'
     );
 
-    document.querySelector('body').style.backgroundColor = 'cornflowerblue';
-    document.querySelector('.number').className = 'number winner';
+    setElementStyle(bodyEl, 'backgroundColor', 'cornflowerblue');
   } else if (guess > secretNumber) {
     score--;
 
@@ -92,23 +112,18 @@ document.querySelector('.check').addEventListener('click', function () {
   setElementValue(scoreEl, 'textContent', score);
 });
 
-// ON CLICK EVENT RUN THIS CODE
-document.querySelector('.again').addEventListener('click', function () {
+// Reset the game
+againButtomEl.addEventListener('click', function () {
   score = 20;
-
   secretNumber = generateSecretNumber();
-
-  scoreEl;
   setElementValue(scoreEl, 'textContent', score);
+  setElementValue(guessResultEl, 'textContent', 'Start guessing...');
 
-  const messageEl = getElement('.message');
-  setElementValue(messageEl, '.textContent', 'Start guessing...');
+  setElementValue(numberEl, 'textContent', '?');
+  setElementValue(guessEl, 'textContent', '');
+  setElementStyle(bodyEl, 'backgroundColor', 'black');
+  setElementValue(highScoreEl, 'textContent', highScore);
+  setElementValue(guessEl, 'value', '');
 
-  const el = getElement('.number');
-  setElementValue(el, 'textContent', '?');
-
-  document.querySelector('.guess').value = '';
-  document.querySelector('body').style.backgroundColor = 'black';
-  document.querySelector('.highscore').textContent = highScore;
-  document.querySelector('.number').className = 'number';
+  setClassName(numberEl, 'number');
 });
